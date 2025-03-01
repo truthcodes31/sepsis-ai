@@ -22,7 +22,7 @@ logs/
 *.tmp
 
 # Machine learning models
-model/*.pkl
+model/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
