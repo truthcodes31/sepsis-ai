@@ -2,17 +2,27 @@ import streamlit as st
 import numpy as np
 import pickle
 import os
+import gdown
 
 # ✅ Ensure set_page_config is the first Streamlit command
 st.set_page_config(page_title="Sepsis Detection AI", page_icon="🩺", layout="centered")
 
-# 🔍 Load the trained model
+# 🔍 Define Model Path and Google Drive Link
 MODEL_PATH = "model/sepsis_model.pkl"
+GDRIVE_LINK = "https://drive.google.com/uc?id=10kNDhNeTNPucAlpccctvo4A5d8vbIf4g"
 
+# 🔽 Download the model if not present
 if not os.path.exists(MODEL_PATH):
-    st.error("🚨 Model file not found! Ensure `sepsis_model.pkl` is in the `model/` directory.")
+    st.info("📥 Downloading model from Google Drive...")
+    os.makedirs("model", exist_ok=True)
+    gdown.download(GDRIVE_LINK, MODEL_PATH, quiet=False)
+
+# 🚨 Check if model exists after download
+if not os.path.exists(MODEL_PATH):
+    st.error("🚨 Model file not found! Please manually download it from [Google Drive](https://drive.google.com/file/d/10kNDhNeTNPucAlpccctvo4A5d8vbIf4g/view?usp=drive_link) and place it in the `model/` directory.")
     st.stop()
 
+# 📂 Load the trained model
 with open(MODEL_PATH, "rb") as model_file:
     model = pickle.load(model_file)
 
@@ -44,5 +54,5 @@ if st.button("🔍 Predict Sepsis Risk"):
 
 # 🔗 Footer
 st.write("---")
-st.write("📌 *Developed by Satya Prakash Shandilya*")
+st.write("📌 *Developed by Satya Prakash Shandilya* )
 
