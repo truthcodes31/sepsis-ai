@@ -1,0 +1,43 @@
+# .gitignore (Git Ignore Rules)
+
+# Bytecode and cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+.env/
+
+# Data files
+data/raw/
+data/processed/
+data/external/
+*.csv
+*.json
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+
+# Machine learning models
+model/*.pkl
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python packaging files
+*.egg-info/
+dist/
+build/
+
+# IDE files
+.vscode/
+*.swp
+*.swo
+.idea/
+
+# Docker
+*.dockerignore
+docker-compose.yml

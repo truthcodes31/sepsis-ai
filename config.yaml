@@ -1,0 +1,32 @@
+# config.yaml (Configuration File)
+
+# General Settings
+dataset:
+  raw_data_path: "data/raw/sepsis_data.csv"
+  processed_data_path: "data/processed/sepsis_cleaned.csv"
+
+# Model Parameters
+model:
+  model_path: "model/sepsis_model.pkl"
+  pipeline_path: "model/pipeline_minmax.pkl"
+  algorithm: "RandomForestClassifier"
+  n_estimators: 100
+  random_state: 42
+
+# Training Settings
+training:
+  test_size: 0.2
+  random_state: 42
+  evaluation_metrics: ["accuracy", "precision", "recall", "f1-score", "roc_auc"]
+
+# API Configuration
+api:
+  host: "127.0.0.1"
+  port: 5000
+  debug: true
+
+# Logging Configuration
+logging:
+  log_file: "logs/application.log"
+  log_level: "INFO"
+
