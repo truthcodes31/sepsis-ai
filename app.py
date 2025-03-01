@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 import pickle
 import os
-import gdown
 
 # ✅ Ensure set_page_config is the first Streamlit command
 st.set_page_config(page_title="Sepsis Detection AI", page_icon="🩺", layout="centered")
@@ -10,6 +9,14 @@ st.set_page_config(page_title="Sepsis Detection AI", page_icon="🩺", layout="c
 # 🔍 Define Model Path and Google Drive Link
 MODEL_PATH = "model/sepsis_model.pkl"
 GDRIVE_LINK = "https://drive.google.com/uc?id=10kNDhNeTNPucAlpccctvo4A5d8vbIf4g"
+
+# 🔽 Install gdown if not available
+try:
+    import gdown
+except ModuleNotFoundError:
+    st.warning("📦 Installing missing package: gdown...")
+    os.system("pip install gdown")
+    import gdown
 
 # 🔽 Download the model if not present
 if not os.path.exists(MODEL_PATH):
@@ -23,8 +30,12 @@ if not os.path.exists(MODEL_PATH):
     st.stop()
 
 # 📂 Load the trained model
-with open(MODEL_PATH, "rb") as model_file:
-    model = pickle.load(model_file)
+try:
+    with open(MODEL_PATH, "rb") as model_file:
+        model = pickle.load(model_file)
+except Exception as e:
+    st.error(f"⚠ Error loading the model: {e}")
+    st.stop()
 
 # 🎯 Streamlit App Layout
 st.title("🩺 Sepsis Detection AI")
@@ -40,19 +51,21 @@ SBP = st.number_input("Systolic Blood Pressure (SBP)", min_value=50, max_value=2
 DBP = st.number_input("Diastolic Blood Pressure (DBP)", min_value=30, max_value=150, value=80)
 Resp = st.number_input("Respiratory Rate", min_value=5, max_value=40, value=18)
 
-# Convert Inputs to NumPy Array
-features = np.array([[HR, O2Sat, Temp, SBP, DBP, Resp]])
+# Convert Inputs to NumPy Array (Ensure Correct Shape)
+features = np.array([HR, O2Sat, Temp, SBP, DBP, Resp]).reshape(1, -1)
 
 # 🏥 **Prediction Button**
 if st.button("🔍 Predict Sepsis Risk"):
-    prediction = model.predict(features)[0]
+    try:
+        prediction = model.predict(features)[0]
 
-    if prediction == 1:
-        st.error("⚠ *High Sepsis Risk Detected!* Immediate medical attention is required.")
-    else:
-        st.success("✅ *Low Sepsis Risk.* No immediate danger detected.")
+        if prediction == 1:
+            st.error("⚠ *High Sepsis Risk Detected!* Immediate medical attention is required.")
+        else:
+            st.success("✅ *Low Sepsis Risk.* No immediate danger detected.")
+    except Exception as e:
+        st.error(f"⚠ Prediction error: {e}")
 
 # 🔗 Footer
 st.write("---")
-st.write("📌 *Developed by Satya Prakash Shandilya*" )
-
+st.write("📌 *Developed by Satya Prakash Shandilya*")
