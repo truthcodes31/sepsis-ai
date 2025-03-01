@@ -54,5 +54,5 @@ if st.button("🔍 Predict Sepsis Risk"):
 
 # 🔗 Footer
 st.write("---")
-st.write("📌 *Developed by Satya Prakash Shandilya* )
+st.write("📌 *Developed by Satya Prakash Shandilya* ")
 
